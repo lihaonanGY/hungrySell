@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "vue": "^1.0.21",
+    "vue-router": "^0.7.13",
     "babel-runtime": "^6.0.0"
   },
   "devDependencies": {

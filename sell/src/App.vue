@@ -1,20 +1,24 @@
 <template>
-  <div id="app">
+  <div>
     <!--使用注册以后的组件-->
     <v-header></v-header>
     <div class="tab">
-      <div class="tab-item">商品</div>
-      <div class="tab-item">评论</div>
-      <div class="tab-item">商家</div>
+      <div class="tab-item">
+        <a v-link="{path:'/goods'}">商品</a>
+      </div>
+      <div class="tab-item">
+        <a v-link="{path:'/ratings'}">评论</a>
+      </div>
+      <div class="tab-item">
+        <a v-link="{path:'/seller'}">商家</a>
+      </div>
     </div>
-    <div class="content">
-      i am content
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import header from './components/header/header.vue';
+  import header from 'components/header/header.vue';
   export default{
     components: {
       // 对header进行注册
@@ -26,14 +30,13 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  #app
-    .tab
-      display: flex
-      width: 100%
-      justify-content: space-around
-      height: 40px
-      line-height: 40px
-      .tab-item
-        flex: 1
-        text-align: center
+  .tab
+    display: flex
+    width: 100%
+    justify-content: space-around
+    height: 40px
+    line-height: 40px
+    .tab-item
+      flex: 1
+      text-align: center
 </style>

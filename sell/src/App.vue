@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--使用注册以后的组件-->
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab">
       <div class="tab-item border-1px">
         <a v-link="{path:'/goods'}">商品</a>
@@ -28,11 +28,12 @@
     },
     created() {
       this.$http.get('/api/seller').then((response) => {
-          response = response.json();
-          if (response.errNo === ERR_OK) {
-
-          }
-        });
+        response = response.body;
+        if (response.errNo === ERR_OK) {
+          this.seller = response.data;
+          console.log(this.seller);
+        }
+      });
     },
     components: {
       // 对header进行注册

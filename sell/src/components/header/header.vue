@@ -13,9 +13,13 @@
           {{seller.description}}/{{seller.deliveryTime}}分钟送达
         </div>
         <div v-if="seller.supports" class="support">
-          <span class="icon"></span>
+          <span class="icon" :class="classMap[seller.supports[0].type]"></span>
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
+      </div>
+      <div class="support-count" v-if="seller.supports">
+        <span class="count">{{seller.supports.length}}个</span>
+        <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
     <div class="bulletin-wrapper"></div>
@@ -28,6 +32,9 @@
       seller: {
         type: Object
       }
+    },
+    created() {
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     }
   };
 </script>
@@ -37,8 +44,9 @@
 
   .header
     color #fff
-    background #000
+    background #999
     .content-wrapper
+      position relative
       padding 24px 12px 18px 24px
       font-size 0
       .avatar
@@ -65,9 +73,46 @@
             line-height 18px
             font-weight bold
 
-
         .description
           margin-bottom 10px
           font-size 12px
           line-height 12px
+        .support
+          .icon
+            display inline-block
+            width 12px
+            height 12px
+            margin-right 4px
+            background-size 12px 12px
+            background-repeat no-repeat
+            &.decrease
+              bg-img('decrease_1')
+            &.discount
+              bg-img('discount_1')
+            &.guarantee
+              bg-img('guarantee_1')
+            &.invoice
+              bg-img('invoice_1')
+            &.special
+              bg-img('special_1')
+          .text
+            line-height 12px
+            font-size 10px
+            vertical-align top
+      .support-count
+        position absolute
+        right 12px
+        bottom 14px
+        padding 0 8px
+        height 24px
+        line-height 24px
+        border-radius 14px
+        background rgba(0, 0, 0, 0.2)
+        .count
+          font-size 10px
+          margin-right 2px
+          vertical-align top
+        .icon-keyboard_arrow_right
+          font-size 10px
+          line-height 24px
 </style>

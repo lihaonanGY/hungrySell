@@ -34,6 +34,9 @@
       <div class="detail-wrapper">
         <div class="detail-main">
           <h1 class="name">{{seller.name}}</h1>
+          <div class="star-wrapper">
+            <star :size="48" :score="seller.score"></star>
+          </div>
         </div>
         <div class="detail-close">
           <i class="icon-close"></i>
@@ -44,6 +47,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import star from 'components/star/star';
+
   export default{
     props: {
       seller: {
@@ -62,6 +67,9 @@
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+    },
+    components: {
+      star
     }
   };
 </script>
@@ -202,12 +210,16 @@
             line-height 16px
             font-weight 700
             text-align center
+          .star-wrapper
+            margin-top 18px
+            padding 2px 0
+            text-align center
         .detail-close
           align-self center
           width 32px
           height 32px
-          padding-bottom  32px
+          padding-bottom 32px
           .icon-close
             font-size 32px
-            color rgba(255,255,255,0.5)
+            color rgba(255, 255, 255, 0.5)
 </style>

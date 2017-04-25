@@ -22,6 +22,7 @@
   const ERR_OK = 0;
   export default{
     data() {
+      // data必须是一个函数
       return {
         seller: {}
       };
@@ -31,7 +32,7 @@
         response = response.body;
         if (response.errNo === ERR_OK) {
           this.seller = response.data;
-          console.log(this.seller);
+          // console.log(this.seller);
         }
       });
     },

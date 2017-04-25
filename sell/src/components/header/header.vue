@@ -17,17 +17,28 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div class="support-count" v-if="seller.supports">
+      <div class="support-count" v-if="seller.supports" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="showDetail">
       <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
     <div class="background">
       <img :src="seller.avatar" width="100%" height="100%">
+    </div>
+    <div class="detail" v-show="detailShow">
+      <!--stick footer布局-->
+      <div class="detail-wrapper">
+        <div class="detail-main">
+          <h1 class="name">{{seller.name}}</h1>
+        </div>
+        <div class="detail-close">
+          <i class="icon-close"></i>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +48,16 @@
     props: {
       seller: {
         type: Object
+      }
+    },
+    data() {
+      return {
+        detailShow: false
+      };
+    },
+    methods: {
+      showDetail() {
+        this.detailShow = true;
       }
     },
     created() {
@@ -50,7 +71,8 @@
 
   .header
     position relative
-    background rgba(7,17,27,0.5)
+    overflow hidden
+    background rgba(7, 17, 27, 0.5)
     color #fff
     .content-wrapper
       position relative
@@ -127,7 +149,7 @@
       height 28px
       line-height 28px
       padding 0 22px 0 12px
-      background rgba(7,17,27,0.2)
+      background rgba(7, 17, 27, 0.2)
       white-space nowrap
       overflow hidden
       text-overflow ellipsis
@@ -136,7 +158,7 @@
         vertical-align top
         width 22px
         height 12px
-        margin-top 7px
+        margin-top 8px
         background-size 22px 12px
         background-repeat no-repeat
         bg-img('bulletin')
@@ -157,4 +179,35 @@
       height 100%
       z-index -1
       filter blur(10px)
+    .detail
+      position fixed
+      top 0
+      left 0
+      width 100%
+      height 100%
+      z-index 100
+      overflow auto
+      background rgba(7, 17, 27, 0.8)
+      font-size 0
+      .detail-wrapper
+        display flex
+        min-height 100%
+        flex-direction column
+        .detail-main
+          flex-grow 1
+          margin-top 64px
+          padding-bottom 10px
+          .name
+            font-size 16px
+            line-height 16px
+            font-weight 700
+            text-align center
+        .detail-close
+          align-self center
+          width 32px
+          height 32px
+          padding-bottom  32px
+          .icon-close
+            font-size 32px
+            color rgba(255,255,255,0.5)
 </style>

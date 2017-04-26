@@ -37,6 +37,12 @@
           <div class="star-wrapper">
             <star :size="48" :score="seller.score"></star>
           </div>
+          <div class="title">
+            <!--如果这里的线不用div用span在安卓设备上会出现问题-->
+            <div class="line"></div>
+            <div class="text">优惠信息</div>
+            <div class="line"></div>
+          </div>
         </div>
         <div class="detail-close">
           <i class="icon-close"></i>
@@ -214,6 +220,18 @@
             margin-top 18px
             padding 2px 0
             text-align center
+          .title
+            display flex
+            width 80%
+            margin 30px auto 24px auto
+            .line
+              flex 1 1 auto
+              position relative
+              top -6px
+              border-bottom 1px solid rgba(255,255,255,.2)
+            .text
+              font-size 14px
+              padding 0 12px
         .detail-close
           align-self center
           width 32px

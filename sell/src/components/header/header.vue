@@ -29,7 +29,7 @@
     <div class="background">
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
-    <div class="detail" v-show="detailShow">
+    <div class="detail" v-show="detailShow" transition="fade">
       <!--stick footer布局-->
       <div class="detail-wrapper">
         <div class="detail-main">
@@ -43,8 +43,22 @@
             <div class="text">优惠信息</div>
             <div class="line"></div>
           </div>
+          <ul v-if="seller.supports" class="supports">
+            <li v-for="item in seller.supports" class="support-item">
+              <span class="icon" :class="classMap[seller.supports[$index].type]"></span>
+              <span class="text">{{seller.supports[$index].description}}</span>
+            </li>
+          </ul>
+          <div class="title">
+            <div class="line"></div>
+            <div class="text">商家公告</div>
+            <div class="line"></div>
+          </div>
+          <div class="bulletin">
+            <p class="content">{{seller.bulletin}}</p>
+          </div>
         </div>
-        <div class="detail-close">
+        <div class="detail-close" @click="hideDetail">
           <i class="icon-close"></i>
         </div>
       </div>
@@ -69,6 +83,9 @@
     methods: {
       showDetail() {
         this.detailShow = true;
+      },
+      hideDetail() {
+        this.detailShow = false;
       }
     },
     created() {
@@ -201,8 +218,16 @@
       height 100%
       z-index 100
       overflow auto
-      background rgba(7, 17, 27, 0.8)
       font-size 0
+      // 在ios设备上有背景虚化效果
+      backdrop-filter blur(10px)
+      transition all 0.7s
+      &.fade-transition
+        opacity 1
+        background rgba(7, 17, 27, 0.8)
+      &.fade-enter, &.fade-leave
+        opacity 0
+        background rgba(7, 17, 27, 0)
       .detail-wrapper
         display flex
         min-height 100%
@@ -223,15 +248,54 @@
           .title
             display flex
             width 80%
-            margin 30px auto 24px auto
+            margin 28px auto 24px auto
             .line
               flex 1 1 auto
               position relative
               top -6px
-              border-bottom 1px solid rgba(255,255,255,.2)
+              border-bottom 1px solid rgba(255, 255, 255, .2)
             .text
-              font-size 14px
               padding 0 12px
+              font-size 14px
+              font-weight 700
+          .supports
+            width 80%
+            margin 0 auto
+            .support-item
+              padding 0 12px
+              margin-bottom 12px
+              &:last-child
+                margin-bottom 0
+              .icon
+                display inline-block
+                width 16px
+                height 16px
+                background-size 16px 16px
+                background-repeat no-repeat
+                margin-right 6px
+                vertical-align top
+                &.decrease
+                  bg-img('decrease_2')
+                &.discount
+                  bg-img('discount_2')
+                &.guarantee
+                  bg-img('guarantee_2')
+                &.invoice
+                  bg-img('invoice_2')
+                &.special
+                  bg-img('special_2')
+              .text
+                display inline-block
+                height 16px
+                line-height 16px
+                font-size 12px
+          .bulletin
+            width 80%
+            margin 0 auto
+            .content
+              padding 0 12px
+              font-size 12px
+              line-height 24px
         .detail-close
           align-self center
           width 32px

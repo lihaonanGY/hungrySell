@@ -56,7 +56,7 @@
         {
           "name": "皮蛋瘦肉粥",
           "price": 10,
-          "oldPrice": "",
+          "oldPrice": 12.3,
           "description": "咸粥",
           "sellCount": 229,
           "rating": 100,

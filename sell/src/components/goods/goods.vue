@@ -35,13 +35,16 @@
         </li>
       </ul>
     </div>
+    <shopcart></shopcart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
+  import shopcart from 'components/shopcart/shopcart';
 
   const ERR_OK = 0;
+
   export default {
     data() {
       return {
@@ -114,6 +117,9 @@
         /* 输出计算后的高度区间数组*/
 //        console.log(this.listHeight);
       }
+    },
+    components: {
+      shopcart
     }
   };
 </script>

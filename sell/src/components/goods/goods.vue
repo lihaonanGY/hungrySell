@@ -26,7 +26,8 @@
                   <span class="count">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  <span class="now">￥{{food.price}}</span><span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
+                  <span class="now">￥{{food.price}}</span><span v-show="food.oldPrice"
+                                                                class="old">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
                   <cartcontrol :food="food"></cartcontrol>
@@ -37,7 +38,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
@@ -62,6 +63,17 @@
       }
     },
     computed: {
+      selectFoods() {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count > 0) {
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
+      },
       currentIndex() {
         for (let i = 0; i < this.listHeight.length; i++) {
           let height1 = this.listHeight[i];
@@ -79,6 +91,7 @@
         if (response.errNo === ERR_OK) {
           this.goods = response.data;
 //          console.log(this.goods);
+//          更改data并不会立即更新dom，会添加watcher异步事件，等到空闲时在更新，$nextTick dom更新以后再执行
           this.$nextTick(() => {
             this._initScroll();
             this._caculateHeight();
@@ -231,7 +244,6 @@
               text-decoration line-through
               font-size 10px
               color rgb(147, 153, 159)
-
 
           .cartcontrol-wrapper
             position absolute

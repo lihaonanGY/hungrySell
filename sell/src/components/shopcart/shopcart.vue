@@ -19,7 +19,7 @@
     </div>
     <div class="ball-container">
       <div v-for="ball in balls" v-show="ball.show" transition="drop" class="ball">
-        <div class="inner"></div>
+        <div class="inner inner-hook"></div>
       </div>
     </div>
   </div>
@@ -111,16 +111,43 @@
         }
       }
     },
-    transition: {
+    transitions: {
       drop: {
         beforeEnter(el) {
-
+          let count = this.balls.length;
+          while (count--) {
+            let ball = this.balls[count];
+            if (ball.show) {
+              let rect = ball.el.getBoundingClientRect();
+              let x = rect.left - 32;
+              let y = -(window.innerHeight - rect.top - 22);
+              el.style.display = '';
+              el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+              el.style.transform = `translate3d(0,${y}px,0)`;
+              let inner = el.getElementsByClassName('inner-hook')[0];
+              inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+              inner.style.transform = `translate3d(${x}px,0,0)`;
+            }
+          }
         },
         enter(el) {
-
+          /* eslint-disable no-unused-vars */
+          let rf = el.offsetHeight;
+//          用offsetheight促发重绘
+          this.$nextTick(() => {
+            el.style.webkitTransform = 'translate3d(0,0,0)';
+            el.style.transform = 'translate3d(0,0,0)';
+            let inner = el.getElementsByClassName('inner-hook')[0];
+            inner.style.webkitTransform = 'translate3d(0,0,0)';
+            inner.style.transform = 'translate3d(0,0,0)';
+          });
         },
         afterEnter(el) {
-
+          let ball = this.dropBalls.shift();
+          if (ball) {
+            ball.show = false;
+            el.style.display = 'none';
+          }
         }
       }
     }
@@ -222,12 +249,12 @@
         bottom 22px
         z-index 200
         &.drop-transition
-          transition all 0.4s
+          transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
           .inner
             width: 16px
             height: 16px
             border-radius 50%
             background rgb(0, 160, 220)
-            transition all 0.4s
+            transition: all 0.4s linear
 
 </style>

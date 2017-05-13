@@ -69,7 +69,7 @@
         let foods = [];
 //        console.log(this.goods[0].foods);
         this.goods.forEach((good) => {
-          console.log(good);
+//          console.log(good);
           good.foods.forEach((food) => {
             if (food.count > 0) {
               foods.push(food);

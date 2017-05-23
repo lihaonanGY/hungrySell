@@ -39,8 +39,9 @@
       </ul>
     </div>
     <!--<shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"-->
-              <!--:min-price="seller.minPrice"></shopcart>-->
-    <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <!--:min-price="seller.minPrice"></shopcart>-->
+    <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
+              :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
@@ -115,7 +116,10 @@
         this.foodsScroll.scrollToElement(el, 300);
       },
       _drop(target) {
-        this.$refs.shopcart.drop(target);
+//        体验优化，异步执行下落动画
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(target);
+        });
       },
       _initScroll() {
         this.menuScroll = new BScroll(this.$els.menuWrapper, {

@@ -32,8 +32,8 @@
 * flex弹性布局，开发移动端页面
 
 ### 安装方法
-npm install
-npm run dev
+`npm install`</br>
+`npm run dev`
 
 #### remark
 by lihaonan</br>

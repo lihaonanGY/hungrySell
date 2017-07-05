@@ -35,7 +35,7 @@
 npm install
 npm run dev
 
-#### tips
-by lihaonan
+#### remark
+by lihaonan</br>
 项目来自滴滴黄轶老师的vue实战项目，本菜鸟努力做到完全吃透消化。
 

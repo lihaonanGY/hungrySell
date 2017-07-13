@@ -31,7 +31,7 @@
         <ratingselect :only-content="onlyContent" :select-type="selectType" :desc="desc"
                       :ratings="food.ratings"></ratingselect>
         <div class="rating-wrapper">
-          <ul v-show="food.ratings && food.ratings.length">
+          <ul v-show="food.ratings && food.ratings.length" v-el:rating-ul>
             <li v-show="needShow(rating.rateType,rating.text)" v-for="rating in food.ratings"
                 class="rating-item border-1px">
               <div class="user">
@@ -84,6 +84,17 @@
       };
     },
     methods: {
+//      checkType() {
+//          console.log('asd');
+//        this.nextTick(() => {
+//            console.log(this.$els.ratingUl.clientHeight);
+//          if (this.$els.ratingUl.clientHeight > 0) {
+//            return false;
+//          } else {
+//            return true;
+//          }
+//        });
+//      },
       show() {
         this.showFlag = true;
         this.selectType = ALL;

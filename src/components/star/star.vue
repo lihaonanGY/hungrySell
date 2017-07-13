@@ -33,7 +33,7 @@
         if (decimal) {
           result.push(CLS_HALF);
         }
-        for (let i = result.length - 1; i < LENGTH; i++) {
+        for (let i = result.length - 1; i < LENGTH - 1; i++) {
           result.push(CLS_OFF);
         }
         return result;

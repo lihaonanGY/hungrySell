@@ -39,8 +39,10 @@
       this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
         response = response.body;
         if (response.errNo === ERR_OK) {
-          this.seller = response.data;
-          // console.log(this.seller);
+//          this.seller = response.data;
+//          console.log(this.seller);
+          this.seller = Object.assign({}, this.seller, response.data);
+//          console.log(this.seller);
         }
       });
     },

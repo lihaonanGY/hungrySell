@@ -57,7 +57,7 @@
   export default {
     data() {
       return {
-        goods: {},
+        goods: [],
         listHeight: [],
         scrollY: 0,
         selectedFood: {}

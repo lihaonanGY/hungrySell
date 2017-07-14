@@ -31,4 +31,5 @@ router.map({
 
 router.start(app, '#app');
 
-router.go('/goods');
+// 在其他页面时会出现dom渲染的问题
+// router.go('/goods');

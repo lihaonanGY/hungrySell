@@ -18,8 +18,18 @@
 * **商家**
     * **商家详情**：展示商家实景照片，商家公告，活动与公告信息
 
-## 示例
-![](https://github.com/lihaonanGY/hungrySell/blob/master/readme_2.png)
+## 先上几张自己的成果图
+首页展示（商品页） | 商品详情
+---|---
+![首页](https://github.com/lihaonanGY/small_demo/blob/master/img_repositories/shangpin.png?raw=true) | ![商品详情](https://github.com/lihaonanGY/small_demo/blob/master/img_repositories/shangpinxiangqing.png?raw=true)
+
+商家页 | 商家详情
+---|---
+![商家页](https://github.com/lihaonanGY/small_demo/blob/master/img_repositories/shangjia.png?raw=true) | ![商家详情](https://github.com/lihaonanGY/small_demo/blob/master/img_repositories/shangjiaxiangqing.png?raw=true)
+
+评论页 | 购物车页
+---|---
+![评论页](https://github.com/lihaonanGY/small_demo/blob/master/img_repositories/pinglun.png?raw=true) | ![购物车页](https://github.com/lihaonanGY/small_demo/blob/master/img_repositories/gouwuche.png?raw=true)
 
 ### 实现
 * 组件化模块化开发

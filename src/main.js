@@ -29,7 +29,8 @@ router.map({
   }
 });
 
+// 路由会创建一个挂在点，并且挂载到#app上
 router.start(app, '#app');
 
 // 在其他页面时会出现dom渲染的问题
-// router.go('/goods');
+router.go('/goods');

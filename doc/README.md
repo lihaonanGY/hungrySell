@@ -75,3 +75,152 @@ npm run dev
 4. 可以在preference更改一些设置，例如文件名，类名前缀，支持浏览器情况
 5. Download
 6. 将fonts文件和style.css放在自己的项目中，通过添加类名的形式可以使用字体图标。
+
+### mock数据
+前后端分离，前端自己模拟数据进行，前后端同时开发，不需要等待接口。只需要事先与后台共同拟定好接口文档即可。
+
+利用webpack，express的router来编写请求。
+ ```
+var app = express();
+// 先拿到自己模拟的数据data.json
+// 将data.json引入到dev-server.js中
+var appData = require('../data.json');
+// 拿到appData数据对象中的某几个数据对象
+var goods = appData.goods;
+var seller = appData.seller;
+var ratings = appData.ratings;
+//定义一个路由
+var apiRoutes = express.Router();
+//编写接口
+apiRoutes.get('/seller', function (req, res) {
+    res.json({
+        errNo: 0,
+        data: seller
+    });
+});
+//使用这个接口 express.use([path]，[路由])
+app.use('/api', apiRoutes);
+
+ ```
+
+ ### 移动端viewport设置
+ 定义视口宽度，限定用户不能缩放页面
+ ```
+ <meta name="viewport"
+        content="width=device-width, // 视口宽度为设备宽度
+        initial-scale=1.0, // 初始化缩放
+        maximum-scale=1.0, // 最大缩放
+        minimum-scale=1.0, // 最小缩放
+        user-scalable=no"  // 禁止用户缩放
+        >
+ ```
+
+ ### 自定义eslint代码风格
+ 根据自己或者公司的编码风格自定义调整eslint的配置
+
+ ```
+ /*************
+ *.eslintrc.js*
+ **************/
+ // 在rules中添加自己的eslint配置，否则默认使用上面extend来的standard配置的模版
+ 'rules': {
+    'semi': ['error', 'always'],  //总是要写分号，不写会报错
+    'indent': 0, //忽略掉缩进检查，使用webstorm自动格式化来格式化缩进ctrl+alt+L
+  }
+ ```
+ 也可以使用/* eslint-disable */不进行eslint检测
+ 也可以/* eslint-disable no-new */ 对某段代码更改规则
+
+ ### vue-router
+ 1. npm安装 在package.json中添加依赖  "vue-router": "^2.1.0"
+ 2. 在main.js入口文件中引入vue-router
+ ```
+  /*************
+ *main.js******
+ **************/
+
+ import Vue from 'vue';
+ import VueRouter from 'vue-router';
+ //需要显示的使用Vue.use()安装路由模块
+ Vue.use(VueRouter);
+ //路由需要一个跟组件
+ let app = Vue.extend(App);
+
+// 创建一个路由实例，可以在参数中进行配置
+let router = new VueRouter({
+//当路由是active状态是默认给他配置一个类名
+  linkActiveClass: 'active'
+});
+
+//定义路由规则，每个路由规则应该映射到一个组件
+router.map({
+  '/goods': {
+    component: goods
+  },
+  '/ratings': {
+    component: ratings
+  },
+  '/seller': {
+    component: seller
+  }
+});
+// 路由会创建一个挂在点，并且挂载到#app上
+router.start(app, '#app');
+// 默认路由到/goods
+router.go('/goods');
+
+  /*************
+ *app.vue******
+ **************/
+
+<div class="tab">
+    <div class="tab-item border-1px">
+        <a v-link="{path:'/goods'}">商品</a>
+    </div>
+    <div class="tab-item">
+        <a v-link="{path:'/ratings'}">评论</a>
+    </div>
+    <div class="tab-item">
+        <a v-link="{path:'/seller'}">商家</a>
+    </div>
+</div>
+<router-view :seller="seller" keep-alive></router-view>
+ ```
+
+ ### 移动端一像素border问题
+ 1px的东西在pc端浏览没有任何问题就是1px，但是在移动端有一个dpi的概念。
+ 因为不同手机像素密度不同，例如在iphone6手机里看可能就是比较粗的一根线。在不同设备像素比的情况下，不是真正的1px，有可能是1.5px，2px，2.5px...
+
+ 做成一个公共函数来解决这个问题
+ ```
+ border-1px($color)
+  position relative
+  &:after
+    display block
+    position absolute
+    bottom 0
+    left 0
+    width 100%
+    border-top 1px solid $color
+    content ' '
+
+@media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)
+  .border-1px
+    &::after
+      -webkit-transform: scaleY(0.7)
+      transform: scaleY(0.7)
+
+@media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2)
+  .border-1px
+    &::after
+      -webkit-transform: scaleY(0.5)
+      transform: scaleY(0.5)
+     // 然后就可以通过给需要加一像素border的元素添加一个border-1px（rgba(x,x,x,x)）css样式，以及给这个元素加一个border-1px的类名即可。
+ ```
+  想了解更多有关dpi、设备像素密度、设备像素比的同学参考下面链接。
+
+ >devicePixelRatio的官方的定义为：设备物理像素和设备独立像素的比例，也就是 devicePixelRatio = 物理像素 / 独立像素。
+
+ [张鑫旭老师的设备像素比devicePixelRatio简单介绍](http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/)
+
+ [7种方法解决移动端Retina屏幕1px边框问题](http://www.jianshu.com/p/7e63f5a32636)

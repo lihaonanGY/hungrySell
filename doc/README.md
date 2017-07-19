@@ -224,3 +224,72 @@ router.go('/goods');
  [张鑫旭老师的设备像素比devicePixelRatio简单介绍](http://www.zhangxinxu.com/wordpress/2012/08/window-devicepixelratio/)
 
  [7种方法解决移动端Retina屏幕1px边框问题](http://www.jianshu.com/p/7e63f5a32636)
+
+ ### Vue-resource
+ 1. 通过package.json npm安装依赖 "vue-resource": "^1.0.1"
+ 2. 在main中通过Vue.use(VueResource)，全局注册。
+ 3. 在created钩子中写请求，将请求到的数据传递给data中。
+ ```
+ this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
+        response = response.body;
+        if (response.errNo === ERR_OK) {
+          // this.seller = Object.assign({}, this.seller, response.data);
+           this.seller = response.data;
+        }
+      });
+ ```
+
+ ### 组件通信
+ #### 父组件给子组件传递消息
+ 1. 在父组件中通过v-bind将数据传递至子组件。
+ 2. 在子组件中通过props接收到父组件传递过来的数据。
+ 3. 在接收的时候应该设置type，期望收到的类型。
+ 4. 如果有默认值也可以设置default。
+ ```
+ <shopcart  :select-foods="selectFoods"></shopcart>
+
+  props: {
+      selectFoods: {
+        type: Array,
+        default () {
+          return [];
+        }
+      }
+    }
+ ```
+
+ ### Sticky footer
+
+ **描述**：如果页面内容不够长的时候，页脚块粘贴在视窗底部；如果内容足够长时，页脚块会被内容向下顺移。
+
+ 1. 兼容性较好的方案
+ - 这个方法虽然代码量稍稍大了一点但是优点就是兼容性比较好。
+ - 最开始写三个层，一个固定在底部的层，与他平级有一个内容的包裹层（需要清除浮动），在他里面有一个实际装东西的内容层。
+ ```
+  <div class="wrapper clearfix">
+    <div class="main"></div>
+  </div>
+  <div class="footer"></div>
+
+  .wrapper
+    min-height: 100%
+    .main
+      padding-bottom: footer需要的高度
+  .close
+    position: relative
+    margin-top:负值比自己提上来
+    height: xxx
+    clear: both
+ ```
+
+ 2. 更简单的通过flex实现。
+ - 给整个页面设置一个最小高度，让他无论何时都铺满整个屏幕。
+ - 包裹层添加display：flex 让他的排列方向变成垂直flex-direction：column
+ - 把底部高度写死，自动撑开的部分设置flex：1即可。
+ - 因为简单就不贴代码了。
+
+参考链接：
+
+[用flex实现Sticky footer布局](https://codepen.io/devatrox/pen/wztlx)
+
+[三种Sticky footer的方法](http://www.cnblogs.com/shicongbuct/p/6487122.html)

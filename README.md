@@ -5,6 +5,9 @@
 ## 就是你用的那个饿了么！
 ![](https://github.com/lihaonanGY/hungrySell/blob/master/readme_1.png) 、
 
+## 一篇关于这个项目的博客
+[项目收获与感悟](https://github.com/lihaonanGY/hungrySell/blob/master/doc/README.md)
+
 ## webApp功能板块
 * **店铺**
     * **店铺详情**：展示店铺的评价星数，店铺公告以及店铺活动信息。
@@ -41,11 +44,11 @@
 * Vue-resource
 * flex弹性布局，开发移动端页面
 
-### 安装方法
+## 安装方法
 `npm install`</br>
 `npm run dev`
 
-#### remark
+## remark
 by lihaonan</br>
 项目来自滴滴黄轶老师的vue实战项目，本菜鸟努力做到完全吃透消化。
 

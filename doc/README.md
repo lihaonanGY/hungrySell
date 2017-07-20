@@ -5,11 +5,7 @@
 
 ---
 ## 目录
-- [Vue.js概述](https://github.com/lihaonanGY/hungrySell/tree/master/doc#Vue.js概述)
-    - [什么是MVVM框架](https://github.com/lihaonanGY/hungrySell/tree/master/doc#什么是MVVM框架)
-    - [对比React和Angular](https://github.com/lihaonanGY/hungrySell/tree/master/doc#对比React和Angular)
-    - [对比React和Angular](https://github.com/lihaonanGY/hungrySell/tree/master/doc#Vue的核心思想)
-
+[toc]
 
 ## 先上几张自己的成果图
 首页展示（商品页） | 商品详情
@@ -502,3 +498,17 @@ drop(el) {
 
 ```
 [贝塞尔曲线制作](http://cubic-bezier.com)
+## 个人感悟
+完成这个项目收获真的非常大，感谢老师，花两天的时间好好的消化了一遍这个项目，写了这篇博客，又把一些很细节的，很容易忘记的东西回忆起来，不清楚的地方立即查文档看博客，非常充实的几天，进步很大。再一次感谢老师。
+
+刚刚升入大四（哦不，是九月开学才大四呢），迫不及待想投身于互联网行业里，春招失利的我现在有大把的时间在这安静的准备秋招，春招自己就是太浮躁，半瓶水响叮当。好了继续学习去咯，但愿秋招自己能有个好结果。
+
+## 联系方式
+
+- **欢迎打扰**
+
+- 邮箱：haonanl@outlook.com
+- github: github.com/lihaonanGY
+- QQ: 732209536
+- 电话： 17785417686
+

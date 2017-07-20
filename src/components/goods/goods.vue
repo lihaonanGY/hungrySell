@@ -94,6 +94,7 @@
       }
     },
     created() {
+//      console.log(this.scrollY);
       this.$http.get('/api/goods').then((response) => {
         response = response.body;
         if (response.errNo === ERR_OK) {

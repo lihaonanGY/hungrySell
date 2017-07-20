@@ -4,7 +4,8 @@
 历时一个多月终于学完了黄轶老师的这门Vue课程，期间考试什么的耽误了不少，总的来说肯定是受益匪浅，感受到了Vue实战的魅力。以前总是看文档，敲小demo，不仅感受不到文档的重点，怎么去运用，还容易学了忘，忘了学。借着昨天刚刚学完的契机，趁热打铁，写一点自己的收获，做个总结，方便以后的查阅。
 
 ---
-
+## 目录
+[link]()
 
 ## 先上几张自己的成果图
 首页展示（商品页） | 商品详情
@@ -257,6 +258,30 @@ router.go('/goods');
       }
     }
  ```
+ 0. 还有一种父子组件通信方法
+ 1. 父组件可以拿到组件节点然后直接调用子组件中的函数，数据通过参数传递进去。
+ ```
+ <shopcart ref="shopcart"></shopcart>
+
+  _drop(target) {
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(target);
+        });
+      },
+ ```
+ #### 子组件向父组件通信
+ 1. 在子组件中通过$emit('事件名'，传递的参数)派发事件
+ 2. 在父组件中通过on：事件名 ，监听到事件
+ 3. 调用函数拿到子组件中传递的参数
+ ```
+  this.$emit('add', event.target);
+//在父组件监听到这个事件
+ <cartcontrol @add="addFood" :food="food"></cartcontrol>
+//父组件拿到这个dom元素的信息
+addFood(target) {
+    this._drop(target);
+}
+ ```
 
  ### Sticky footer
 
@@ -293,3 +318,183 @@ router.go('/goods');
 [用flex实现Sticky footer布局](https://codepen.io/devatrox/pen/wztlx)
 
 [三种Sticky footer的方法](http://www.cnblogs.com/shicongbuct/p/6487122.html)
+
+### better-scroll
+**简介：** 黄轶老师的一个滚动库由iScroll进行重写和扩展的，可以实现各种滚动轮播效果。废话不说上[github地址https://github.com/ustbhuangyi/better-scroll](https://github.com/ustbhuangyi/better-scroll)。
+
+#### 使用方法：
+- 这个库要求外层必须要有一个wrapper层来包裹住需要滚动的元素。
+- BScroll 在实例化的时候要接收一个dom对象和一个选项对象
+- 因为Vue数据驱动视图是异步的，而better-scrool有需要计算dom的高度，所以注意初始化better-scroll的时候必须在dom更新完成后。
+
+```
+<div id="wrapper" v-el:ul-wrapper>
+    <ul>
+	   <li>...</li>
+	   <li>...</li>
+	   ...
+    </ul>
+  </div>
+```
+```
+import BScroll from 'better-scroll';
+this.$nextTick(() => {
+    this.ulScroll = new BScroll(this.$els.ulWrapper, {});
+})
+```
+1. 和其他一样第一步先添加依赖。
+2. 引入better-scroll，并且在dom更新后，初始化better-scroll。
+3. 在初始化的时候传入dom对象，以及需要选择的参数。
+- 例如：
+    - click：true 是否派发click事件；
+    - startY: 0 开始的Y轴位置；
+    - probeType: 3;
+        - 1 会截流,只有在滚动结束的时候派发一个 scroll 事件。
+        - 2 在手指 move 的时候也会实时派发 scroll 事件，不会截流。
+        - 3 除了手指 move 的时候派发scroll事件，在 swipe（手指迅速滑动一小段距离）的情况下，列表会有一个长距离的滚动动画，这个滚动的动画过程中也会实时派发滚动事件
+    - 更详细的去[github文档](https://github.com/ustbhuangyi/better-scroll)里寻找。
+
+#### 事件(event):
+
+- beforeScrollStart - 滚动开始之前触发
+- scrollStart - 滚动开始时触发
+- scroll - 滚动时触发
+- scrollCancel - 取消滚动时触发
+- scrollEnd - 滚动结束时触发
+- touchend - 手指移开屏幕时触发
+- flick - 轻拂时触发
+- refresh - 当 better-scroll 刷新时触发
+- destroy - 销毁 better-scroll 实例时触发
+
+栗子：
+```
+//实例化BScroll的时候在选项对象中传入参数的时候传入了probeType：3
+//意味着会实时的派发scroll事件
+    this.ulScroll = new BScroll(this.$els.ulWrapper, {
+        probeType：3
+    });
+    //给这个滚动实例设置监听
+    this.ulScroll.on('scroll',(pos) => {
+        //可以拿到当前滚动的位置值,让他四舍五入得整数，取绝对值得到正值
+        this.xxx = Math.abs(Math.round(pos.x));
+        this.yyy = Math.abs(Math.round(pos.y));
+    })
+```
+#### 方法
+- crollTo(x, y, time, easing)
+滚动到某个位置，x,y 代表坐标，time 表示动画时间，easing 表示缓动函数
+
+    - Example:
+```
+let scroll = new BScroll(document.getElementById('wrapper'))
+scroll.scrollTo(0, 500)
+```
+- scrollToElement(el, time, offsetX, offsetY, easing)
+滚动到某个元素，el（必填）表示 dom 元素，time 表示动画时间，offsetX 和 offsetY 表示坐标偏移量，easing 表示缓动函数
+
+- refresh() 强制 scroll 重新计算，当 better-scroll 中的元素发生变化的时候调用此方法。
+
+### 购物车小球动画
+#### 目标
+我们要在添加购物车的时候做一个小球飞入购物车的动画.
+#### 效果
+![效果图](https://github.com/lihaonanGY/small_demo/blob/master/img_repositories/smallBall.png?raw=true)
+
+1. 小球水平方向上有一个移动动画。
+2. 小球在垂直方向上的动画类似于一个抛物线，不是单纯平移过去的。
+3. 每一次触发动画的位置不同，需要计算。
+4. 添加购物车、购物车以及他们的父组件都不同。
+5. 抛物线使用贝塞尔曲线完成。
+```
+<div class="ball-container">
+    <div v-for="ball in balls">
+        <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+            <div class="ball" v-show="ball.show">
+              <div class="inner inner-hook"></div>
+            </div>
+        </transition>
+    </div>
+</div>
+```
+>在一个容器中装入几个小球（之所以要几个小球是因为可能会快速添加购物车会出现多个小球同时出现在屏幕上的情况）。给小球添加transition过渡效果，并且添加事件钩子触发一些函数。小球我们套了内外两层，因为过度的时候我们在两个方向上做不同的运动。小球默认v-show都是false只有发生动画的时候才会变成true。
+```
+//在这个过程中涉及到三个组件，一个父组件中包含了添加购物车这个组件以及购物车组件，这里涉及了他们互相通信的过程。
+// 在添加购物车子组件点击增加的时候派发事件，将这个dom节点传递至父组件
+ this.$emit('add', event.target);
+//在父组件监听到这个事件
+ <cartcontrol @add="addFood" :food="food"></cartcontrol>
+//父组件拿到这个dom元素的信息
+addFood(target) {
+    this._drop(target);
+}
+//在父组件中调用购物车子组件的方法
+_drop(target) {
+    // 体验优化,异步执行下落动画
+    this.$nextTick(() => {
+        this.$refs.shopcart.drop(target);
+    });
+}
+//现在才在购物车组件中拿到点击时的dom元素的信息
+addFood(target) {
+    this.drop(target);
+}
+//遍历一个非活跃状态的小球出来，让他显示出来，并且让它带上刚刚收到的dom元素的信息
+drop(el) {
+        for (let i = 0; i < this.balls.length; i++) {
+          let ball = this.balls[i];
+          if (!ball.show) {
+            ball.show = true;
+            ball.el = el;
+            this.dropBalls.push(ball);
+            return;
+          }
+        }
+      }
+      //设置进入前的位置
+ beforeDrop(el) {
+        let count = this.balls.length;
+        while (count--) {
+          let ball = this.balls[count];
+          if (ball.show) {
+            let rect = ball.el.getBoundingClientRect();
+            let x = rect.left - 32;
+            let y = -(window.innerHeight - rect.top - 22);
+            el.style.display = '';
+            el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+            el.style.transform = `translate3d(0,${y}px,0)`;
+            let inner = el.getElementsByClassName('inner-hook')[0];
+            inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+            inner.style.transform = `translate3d(${x}px,0,0)`;
+          }
+        }
+      },
+      // 设置进入后的位置
+      dropping(el, done) {
+        /* eslint-disable no-unused-vars */
+        let rf = el.offsetHeight;
+        this.$nextTick(() => {
+          el.style.webkitTransform = 'translate3d(0,0,0)';
+          el.style.transform = 'translate3d(0,0,0)';
+          let inner = el.getElementsByClassName('inner-hook')[0];
+          inner.style.webkitTransform = 'translate3d(0,0,0)';
+          inner.style.transform = 'translate3d(0,0,0)';
+          el.addEventListener('transitionend', done);
+        });
+      },
+      // 动画结束后将小球变回未激活状态
+      afterDrop(el) {
+        let ball = this.dropBalls.shift();
+        if (ball) {
+          ball.show = false;
+          el.style.display = 'none';
+        }
+      }
+    }
+
+    //给内外层分别添加动画transition
+    //借用贝塞尔曲线完成抛物线的制作
+    transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
+    transition: all 0.4s linear
+
+```
+[贝塞尔曲线制作](http://cubic-bezier.com)
